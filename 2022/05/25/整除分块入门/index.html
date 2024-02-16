@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>整除分块入门 | Cuiyi_SAI&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="整除分块首先引入一个问题，若我们要求这么一个式子：  \sum\limits_{i&#x3D;1}^{n} \left\lfloor\dfrac{n}{i}\right\rfloor自然而然会想到这么一段翻译代码： 12for(int i&#x3D;1;i&lt;&#x3D;n;i++)  sum+&#x3D;n&#x2F;i; 但是，如果 $1\le n\le10^9$，又该如何解决呢？ 显然，$\left\lfloor\dfrac{n}{i}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="整除分块入门">
+<meta property="og:url" content="http://cuiyisai.github.io/2022/05/25/%E6%95%B4%E9%99%A4%E5%88%86%E5%9D%97%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Cuiyi_SAI&#39;s blog">
+<meta property="og:description" content="整除分块首先引入一个问题，若我们要求这么一个式子：  \sum\limits_{i&#x3D;1}^{n} \left\lfloor\dfrac{n}{i}\right\rfloor自然而然会想到这么一段翻译代码： 12for(int i&#x3D;1;i&lt;&#x3D;n;i++)  sum+&#x3D;n&#x2F;i; 但是，如果 $1\le n\le10^9$，又该如何解决呢？ 显然，$\left\lfloor\dfrac{n}{i}">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-03T14:20:54.000Z">
+<meta property="article:author" content="Cuiyi_SAI">
+<meta property="article:tag" content="OI 相关">
+<meta property="article:tag" content="数学">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/usericon/488775.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://images5.alphacoders.com/585/585645.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Cuiyi_SAI's blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">首页</a>
+    
+      <a class="main-nav-link" href="/archives">印记</a>
+    
+      <a class="main-nav-link" href="/about">关于我</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">首页</a>
+    
+      <a class="nav-dropdown-link" href="/archives">印记</a>
+    
+      <a class="nav-dropdown-link" href="/about">关于我</a>
+    
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=https://cdn.luogu.com.cn/upload/image_hosting/4bbjia3t.png></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">Cuiyi_SAI </div>
+      <div class="dot"></div>
+      <div class="subtitle">人只有醒来后才知道自己睡了一觉 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://www.luogu.com.cn/user/488775" title="luogu"><i class="fa-solid fa-laptop-code""></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://space.bilibili.com/2013005981?spm_id_from=333.1007.0.0" title="bilibili"><i class="fa-brands fa-bilibili"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/CuiyiSAI" title="GitHub"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">标签</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/OI-%E7%9B%B8%E5%85%B3/" rel="tag">OI 相关</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/web-%E5%BC%80%E5%8F%91/" rel="tag">web 开发</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/" rel="tag">项目开发</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-整除分块入门" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        整除分块入门
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2022-05-24T16:00:00.000Z" itemprop="datePublished">2022-05-25</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            10k 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OI-%E7%9B%B8%E5%85%B3/" rel="tag">OI 相关</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="整除分块"><a href="#整除分块" class="headerlink" title="整除分块"></a>整除分块</h1><p>首先引入一个问题，若我们要求这么一个式子：</p>
+<script type="math/tex; mode=display">
+\sum\limits_{i=1}^{n} \left\lfloor\dfrac{n}{i}\right\rfloor</script><p>自然而然会想到这么一段翻译代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">  sum+=n/i;</span><br></pre></td></tr></table></figure>
+<p>但是，如果 $1\le n\le10^9$，又该如何解决呢？</p>
+<p>显然，$\left\lfloor\dfrac{n}{i}\right\rfloor$与$\dfrac{n}{i}$的不同在于，前者的值在某些情况下会出现<strong>区间性</strong>的大量重复。<br>下面我们来考察当 $n=10$时$\left\lfloor\dfrac{n}{i}\right\rfloor$的取值</p>
+<script type="math/tex; mode=display">
+\boxed{10}\quad \boxed{5}\quad \boxed{3}\quad \boxed{2\quad 2}\quad \boxed{1\quad 1\quad 1\quad 1\quad 1}</script><p>我们可以发现：</p>
+<script type="math/tex; mode=display">
+\left\lfloor\dfrac{n}{1}\right\rfloor=10\\
+~\\
+\left\lfloor\dfrac{n}{2}\right\rfloor=5\\
+~\\
+\left\lfloor\dfrac{n}{3}\right\rfloor=3\\
+~\\
+\left\lfloor\dfrac{n}{4}\right\rfloor=\left\lfloor\dfrac{n}{5}\right\rfloor=2\\
+~\\
+\left\lfloor\dfrac{n}{6}\right\rfloor=\left\lfloor\dfrac{n}{7}\right\rfloor=\left\lfloor\dfrac{n}{8}\right\rfloor=\left\lfloor\dfrac{n}{9}\right\rfloor=\left\lfloor\dfrac{n}{10}\right\rfloor=1</script><p>显然重复部分（我们将他们成为块）占比很大，因此我们就找到了优化的突破口，如何优化在重复部分耗费的计算？</p>
+<p>由于 $i$ 单调递增排列，因此重复部分是连续出现的，对于一个块$[l,r]$，若求出了 $l,r$就可以快速计算一整个块整除意义上的贡献。</p>
+<p>经过思考可以得到$l$的初值必定为$1$，还有一个很显然的$l$ 的转移方程：</p>
+<script type="math/tex; mode=display">l=r+1</script><p>此时问题再次简单化，如何在已知$l$的情况下，快速求出重复部分右端点 $r$？</p>
+<p>考虑 $r$的性质：根据$[l,r]$的定义可以得到$\left\lfloor\dfrac{n}{l}\right\rfloor=\left\lfloor\dfrac{n}{r}\right\rfloor$，我们将$\left\lfloor\dfrac{n}{l}\right\rfloor$表示为$k$ 。<br>此时有：</p>
+<script type="math/tex; mode=display">
+k=\left\lfloor\dfrac{n}{r}\right\rfloor\\
+~\\
+\dfrac{n}{r}\ge k~（向下取整必定小于分数运算）\\
+~\\
+\dfrac{r}{n}\le \dfrac{1}{k}\\ 
+~\\
+r\le \left\lfloor\dfrac{n}{k}\right\rfloor  (r\in\Z)</script><p>此时若使 $r$ 最大，则取等，即<script type="math/tex">r=\left\lfloor\dfrac{n}{k}\right\rfloor=\left\lfloor\dfrac{n}{\left\lfloor\dfrac{n}{l}\right\rfloor}\right\rfloor</script><br>此时，我们已经得到了快速求出 $l,r$的算法,因此对于大量的重复贡献，我么可以利用$[l,r]$区间快速得到总贡献，时间复杂度为$\Theta(\sqrt{n})$。<br>具体实现请看代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> l=<span class="number">1</span>,r;l&lt;=n;l=r+<span class="number">1</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> k=n/l;</span><br><span class="line">  r=n/k;</span><br><span class="line">  sum=sum+(k*(r-l+<span class="number">1</span>));  <span class="comment">//相同贡献乘区间长度</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们习惯把以上优化算法称为<strong>整除分块</strong>（或除法分块、数论分块等），它可以优化以下类似式子的时间复杂度：</p>
+<script type="math/tex; mode=display">
+\sum\limits_{i=1}^{n}f(\left\lfloor\dfrac{n}{i}\right\rfloor)</script><hr>
+<h2 id="例题深化"><a href="#例题深化" class="headerlink" title="例题深化"></a>例题深化</h2><h3 id="1-UVA11526"><a href="#1-UVA11526" class="headerlink" title="1. UVA11526"></a>1. <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA11526">UVA11526</a></h3><p>模板题，翻译都不需要的那种，直接整除分块优化。（过~~~）</p>
+<h3 id="2-P3935-Calculating"><a href="#2-P3935-Calculating" class="headerlink" title="2.P3935 Calculating"></a>2.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3935">P3935 Calculating</a></h3><p><strong>题目大意</strong>：求</p>
+<script type="math/tex; mode=display">
+若n=p_1^{c_1}\cdot p_2^{c_2}\cdots p_m^{c_m},f(n)=(c_1+1)\cdot(c_2+1)\cdots(c_m+1)\\
+~\\
+\sum\limits_{i=l}^{r}f(i)~\bmod998244353\\</script><p>首先我们要知道 $n=p_1^{c_1}\cdot p_2^{c_2}\cdots p_m^{c_m},则f(n)=(c_1+1)\cdot(c_2+1)\cdots(c_m+1)$即为$n$的因数个数，可以由质因数的组合得到这个公式，这里不再详解。</p>
+<p>回顾到这道题，要求区间$[l,r]$中的数的因子个数之和，自然而然就是类似于前缀和式的方法：求出$[1,l-1]$的因子和以及$[1,r]$的因子和，然后后者减去前者，就可以得到$[l,r]$的因子和。</p>
+<p>可以知道，$[1,n]$中$i$的倍数有$\left\lfloor\dfrac{n}{i}\right\rfloor$个，即有$\left\lfloor\dfrac{n}{i}\right\rfloor$个数包含因子$i$。因此$\sum\limits_{i=1}^{n}f(i)=\sum\limits_{i=1}^{n}\left\lfloor\dfrac{n}{i}\right\rfloor$</p>
+<script type="math/tex; mode=display">
+\sum\limits_{i=l}^{r}f(i)=\sum\limits_{i=1}^{r}\left\lfloor\dfrac{r}{i}\right\rfloor-\sum\limits_{i=1}^{l-1}\left\lfloor\dfrac{l}{i}\right\rfloor</script><p>然后又变成了整除分块裸题。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MOD=<span class="number">998244353</span>;</span><br><span class="line"><span class="type">int</span> a,b;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">    <span class="type">int</span> suma=<span class="number">0</span>,sumb=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> l=<span class="number">1</span>,r;l&lt;=(a<span class="number">-1</span>);l=r+<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      r=(a<span class="number">-1</span>)/((a<span class="number">-1</span>)/l);</span><br><span class="line">      suma=(suma+(((a<span class="number">-1</span>)/l)%MOD*(r-l+<span class="number">1</span>)%MOD)%MOD)%MOD;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> l=<span class="number">1</span>,r;l&lt;=b;l=r+<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      r=b/(b/l);</span><br><span class="line">      sumb=(sumb+((b/l)%MOD*(r-l+<span class="number">1</span>)%MOD)%MOD)%MOD;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;((sumb-suma)%MOD+MOD)%MOD;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-CF616E-Sum-of-Remainders"><a href="#3-CF616E-Sum-of-Remainders" class="headerlink" title="3.CF616E Sum of Remainders"></a>3.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF616E">CF616E Sum of Remainders</a></h3><p><strong>题目大意：</strong><br>求</p>
+<script type="math/tex; mode=display">
+(\sum\limits_{i=1}^{m}n\bmod i)\bmod (10^9+7)</script><p>很简单的一道推式子题，就是因为用上了整除分块才水上了紫。</p>
+<script type="math/tex; mode=display">
+\sum\limits_{i=1}^{m}n\bmod i=\sum\limits_{i=1}^{m}(n-\left\lfloor\dfrac{n}{i}\right\rfloor\cdot i)=nm-\sum\limits_{i=1}^{m}\left\lfloor\dfrac{n}{i}\right\rfloor\cdot i</script><p>由于块中的元素重复，我们可以提取公因数，因此乘 $i$可以在整除分块的过程中执行，不会影响效率，$\sum\limits_{i=1}^{m}\left\lfloor\dfrac{n}{i}\right\rfloor i$可以利用整除分块和高斯求和公式快速得到（不懂得可以停下来稍微想想）。</p>
+<p><del>照水不误</del> </p>
+<ul>
+<li>运算过程中会爆longlong，取余很恶心</li>
+<li>在这种恶心超大取余数论题中，常要预处理出某些除数的乘法逆元。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> inv2 500000004<span class="comment">//2在mod 1e9+7 意义下的乘法逆元</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"><span class="type">int</span> ans;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MOD=<span class="number">1e9</span>+<span class="number">7</span>;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">  ans=((n%MOD)*(m%MOD))%MOD;</span><br><span class="line">  <span class="type">int</span> sum=<span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> l=<span class="number">1</span>,r;l&lt;=<span class="built_in">min</span>(n,m);l=r+<span class="number">1</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    r=n/(n/l);</span><br><span class="line">    <span class="keyword">if</span>(r&gt;m) r=m;</span><br><span class="line">    sum=(<span class="number">1ll</span>*sum%MOD+(<span class="number">1ll</span>*(n/l)%MOD*((((r-l+<span class="number">1</span>)%MOD)*((r+l)%MOD))%MOD*inv2%MOD)%MOD)%MOD)%MOD;</span><br><span class="line">  &#125;</span><br><span class="line">  cout&lt;&lt;((ans-sum%MOD)%MOD+MOD)%MOD;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-P2260-清华集训2012-模积和"><a href="#4-P2260-清华集训2012-模积和" class="headerlink" title="4.P2260 [清华集训2012]模积和"></a>4.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2260">P2260 [清华集训2012]模积和</a></h3><p><strong>题目大意：</strong> 求</p>
+<script type="math/tex; mode=display">
+\sum\limits_{i=1}^{n}\sum\limits_{j=1}^m(n\bmod i)\cdot(m\bmod j)~~i\ne j</script><p>$\bmod 19940417$的值</p>
+<p>对于这种式子很长，没有思路的题目，往往需要我们将式子拆开来才能找到考点。<br>考虑式子条件$i\ne j$的运算意义，就是在原有式子的基础上减去$i,j$重复部分，即</p>
+<script type="math/tex; mode=display">
+\sum\limits_{i=1}^{n}\sum\limits_{j=1}^{m}(n \bmod i)(m\bmod j)-\sum\limits_{i=1}^{\min(n,m)}(n\bmod i)(m\bmod i)</script><p><del>然后我们就可以愉快的手撕$\sum$</del>:</p>
+<script type="math/tex; mode=display">
+\sum\limits_{i=1}^{n}\sum\limits_{j=1}^{m}(n \bmod i)(m\bmod j)-\sum\limits_{i=1}^{\min(n,m)}(n\bmod i)(m\bmod i)\\
+\Leftrightarrow\\
+\sum\limits_{i=1}^{n}(n\bmod i)\sum\limits_{j=1}^{m}(m\bmod j)-\sum\limits_{i=1}^{\min(n,m)}(n\bmod i)(m\bmod i)\\
+\Leftrightarrow\\
+\sum\limits_{i=1}^{n}(n\bmod i)\sum\limits_{j=1}^{m}(m\bmod j)-\sum\limits_{i=1}^{\min(n,m)}(n-\left\lfloor\dfrac{n}{i}\right\rfloor\cdot i)(m-\left\lfloor\dfrac{m}{i}\right\rfloor\cdot i)\\
+\Leftrightarrow\\
+\sum\limits_{i=1}^{n}(n\bmod i)\sum\limits_{j=1}^{m}(m\bmod j)-\sum\limits_{i=1}^{\min(n,m)}(nm-m\cdot\left\lfloor\dfrac{n}{i}\right\rfloor\cdot i-n\cdot\left\lfloor\dfrac{m}{i}\right\rfloor\cdot i+\left\lfloor\dfrac{m}{i}\right\rfloor\left\lfloor\dfrac{n}{i}\right\rfloor\cdot i^2)\\
+\Leftrightarrow\\
+\sum\limits_{i=1}^{n}(n\bmod i)\sum\limits_{j=1}^{m}(m\bmod j)-\sum\limits_{i=1}^{\min(n,m)}nm+\sum\limits_{i=1}^{\min(n,m)}m\left\lfloor\dfrac{n}{i}\right\rfloor i+\sum\limits_{i=1}^{\min(n,m)}n\left\lfloor\dfrac{m}{i}\right\rfloor i-\sum\limits_{i=1}^{\min(n,m)}\left\lfloor\dfrac{m}{i}\right\rfloor\left\lfloor\dfrac{n}{i}\right\rfloor i^2</script><p>我们使$m&lt;n$:</p>
+<script type="math/tex; mode=display">
+\sum\limits_{i=1}^{n}(n\bmod i)\sum\limits_{j=1}^{m}(m\bmod j)-\sum\limits_{i=1}^{m}nm+\sum\limits_{i=1}^{m}m\left\lfloor\dfrac{n}{i}\right\rfloor i+\sum\limits_{i=1}^{m}n\left\lfloor\dfrac{m}{i}\right\rfloor i-\sum\limits_{i=1}^{m}\left\lfloor\dfrac{m}{i}\right\rfloor\left\lfloor\dfrac{n}{i}\right\rfloor i^2\\
+\Leftrightarrow\\
+\sum\limits_{i=1}^{n}(n\bmod i)\sum\limits_{j=1}^{m}(m\bmod j)-nm^2+m\sum\limits_{i=1}^{m}\left\lfloor\dfrac{n}{i}\right\rfloor i+n\sum\limits_{i=1}^{m}\left\lfloor\dfrac{m}{i}\right\rfloor i-\sum\limits_{i=1}^{m}\left\lfloor\dfrac{m}{i}\right\rfloor\left\lfloor\dfrac{n}{i}\right\rfloor i^2</script><p>这个式子结构性就很强了，我们可以考虑逐一求得式子各部分的值来得到最终答案。</p>
+<ul>
+<li><p><strong>part 1：$\sum\limits_{i=1}^{n}(n\bmod i)\sum\limits_{j=1}^{m}(m\bmod j)$</strong><br>很显然就是上一题的结论与做法，不再赘述。</p>
+</li>
+<li><p><strong>part 2：$nm^2$</strong><br>入门级运算</p>
+</li>
+<li><p><strong>part 3：$m\sum\limits_{i=1}^m\left\lfloor\dfrac{n}{i}\right\rfloor i+n\sum\limits_{i=1}^{m}\left\lfloor\dfrac{m}{i}\right\rfloor i$</strong><br>依旧是上一题结论，换汤不换药。</p>
+</li>
+<li><p><strong>part 4：$\sum\limits_{i=1}^{m}\left\lfloor\dfrac{m}{i}\right\rfloor\left\lfloor\dfrac{n}{i}\right\rfloor i^2$</strong></p>
+</li>
+</ul>
+<p>看到这个式子我一开始就蒙了（太弱了），是不是式子柴得不够完全啊，<del>然后就浪费了大量的时间来化简这个式子，最后还是做了无用功。</del> </p>
+<p>那到底应该如何处理呢？观察这部分式子，$\left\lfloor\dfrac{m}{i}\right\rfloor$与$\left\lfloor\dfrac{n}{i}\right\rfloor$都是我们熟悉的整除分块，但是要是将他们联系在一起$\left\lfloor\dfrac{m}{i}\right\rfloor\left\lfloor\dfrac{n}{i}\right\rfloor$显然不是简单的直接分块相乘，那又该<strong>如何优化</strong>呢？借助上一题的思路，利用块的优化过程自然也要带上计算$i^2$，那是否 $\sum\limits_{i=1}^{n}i^2$也具有类似等差数列一样的求和公式呢（我太弱了不知道，在教练的帮助下推了好久才推出来）？</p>
+<p>我们来模拟一下$\sum\limits_{i=1}^{m}\left\lfloor\dfrac{m}{i}\right\rfloor\left\lfloor\dfrac{n}{i}\right\rfloor$的过程,考虑$n=20,m=17$</p>
+<script type="math/tex; mode=display">
+\boxed{20\cdot 17}\quad\boxed{10\cdot 8}\quad\boxed{6\cdot5}\quad\boxed{5\cdot 4}\quad\boxed{4\cdot 3}\quad\boxed{3\cdot 2}\quad\boxed{2\cdot 2\quad 2\cdot 2}\quad\boxed{2\cdot 1\quad2\cdot 1}\\
+~\\
+\boxed{1\cdot 1\quad1\cdot 1\quad1\cdot 1\quad1\cdot 1\quad1\cdot 1\quad1\cdot 1\quad1\cdot 1}</script><p>稍加思索可以发现，<strong>$\left\lfloor\dfrac{n}{i}\right\rfloor$所分的一个块与$\left\lfloor\dfrac{m}{i}\right\rfloor$所分的一个块的交集（公共部分）也是$\left\lfloor\dfrac{n}{i}\right\rfloor\left\lfloor\dfrac{m}{i}\right\rfloor$的一个块</strong>。</p>
+<p>稍微数学一点的表达：</p>
+<script type="math/tex; mode=display">
+若A为\left\lfloor\dfrac{n}{i}\right\rfloor的一个块，B为\left\lfloor\dfrac{m}{i}\right\rfloor的一个快\\
+~\\
+记作~A\in\left\lfloor\dfrac{n}{i}\right\rfloor，B\in\left\lfloor\dfrac{m}{i}\right\rfloor\\
+~\\
+则有~(A\cap B)\in \left\lfloor\dfrac{n}{i}\right\rfloor\left\lfloor\dfrac{m}{i}\right\rfloor</script><p>有了这个概念，我们就易得$\left\lfloor\dfrac{n}{i}\right\rfloor\left\lfloor\dfrac{m}{i}\right\rfloor$的块$[l,r]$的左右端点转移方程：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+r=\min(\left\lfloor\dfrac{n}{\left\lfloor\dfrac{n}{l}\right\rfloor}\right\rfloor,\left\lfloor\dfrac{m}{\left\lfloor\dfrac{m}{l}\right\rfloor}\right\rfloor)\\
+~\\
+l=r+1
+\end{cases}</script><p>接下来我们考虑推导 $S_n=\sum\limits_{i=1}^ni^2$ 的通项式。</p>
+<p>考虑</p>
+<script type="math/tex; mode=display">
+\because(n+1)^3=n^3+3n^2+3n+1\\
+~\\
+\therefore(n+1)^3-n^3=3n^2+3n+1\\
+~\\
+\therefore
+\begin{cases}
+2^3-1^3=3\cdot 1^2+3+1=7\\
+3^3-2^3=3\cdot 2^2+3\cdot 2+1=19\\
+4^3-3^3=3\cdot3^2+3\cdot3+1=37\\
+\cdots\\
+(n+1)^3-n^3=3n^2+3n+1
+\end{cases}\\
+~\\
+\therefore\begin{aligned} 
+(n+1)^3-1^3&=\sum\limits_{i=1}^{n}\left((i+1)^3-i^3\right)\\
+&=3\sum\limits_{i=1}^{n}n^2+3\sum\limits_{i=1}^{n}i+\sum\limits_{i=1}^n1\\
+&=3\cdot S_n+3\cdot\dfrac{(n+1)n}{2}+n
+\end{aligned}\\
+\therefore\begin{aligned}
+S_n&=\dfrac{(n+1)^3}{3}-\dfrac{1}{3}-\dfrac{(n+1)n}{2}-\dfrac{n}{3}\\
+&=\dfrac{2(n+1)^3}{6}-\dfrac{2}{6}-\dfrac{3(n+1)n}{6}-\dfrac{2n}{6}\\
+&=\dfrac{2(n+1)^3-2-3(n+1)n-2n}{6}\\
+&=\dfrac{2n^3+6n^2+6n+2-2-3n^2-3n-2n}{6}\\
+&=\dfrac{2n^3+3n^2+n}{6}\\
+&=\dfrac{n(n+1)(2n+1)}{6}~~~~(提取公因数后再十字相乘化简)\\
+\end{aligned}</script><p>此时，我们已经解决了关于这道题的所有难点，有了二维整除分块以及$\sum\limits_{i=1}^ni^2$的求和公式，我么就可仿照类似上一题一般的方法优化$\sum\limits_{i=1}^m\left\lfloor\dfrac{n}{i}\right\rfloor\left\lfloor\dfrac{m}{i}\right\rfloor i^2$。</p>
+<p>此时，我们首先化简题目的式子，然后对式子各部分进行逐一处理优化，最后得到了最终的算法：</p>
+<p>处理以下函数</p>
+<ul>
+<li>$F_x：\sum\limits_{i=1}^x(x\bmod i)$</li>
+<li>$G_{x,y} ：\sum\limits_{i=1}^x(y\bmod i)$</li>
+<li>$T：\sum\limits_{i=1}^m\left\lfloor\dfrac{n}{i}\right\rfloor\left\lfloor\dfrac{m}{i}\right\rfloor i^2$</li>
+</ul>
+<p>最终答案为：$F_nF_m-nm^2+nG_{m,m}+mG_{m,n}-T$</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="type">const</span> <span class="type">long</span> <span class="type">long</span> MOD=<span class="number">19940417</span>,inv6=<span class="number">3323403</span>,inv2=<span class="number">9970209</span>;  <span class="comment">//预处理公式中除数的乘法逆元</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">G</span><span class="params">(<span class="type">int</span> s,<span class="type">int</span> t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> sum=<span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> l=<span class="number">1</span>,r;l&lt;=s;l=r+<span class="number">1</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    r=<span class="built_in">min</span>(t/(t/l),s);</span><br><span class="line">    sum=(sum+<span class="number">1ll</span>*(t/l)*(r+l)%MOD*(r-l+<span class="number">1</span>)%MOD*inv2)%MOD;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sum%MOD;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">F</span><span class="params">(<span class="type">int</span> s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="number">1ll</span>*s*s-<span class="built_in">G</span>(s,s))%MOD;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">S</span><span class="params">(<span class="type">int</span> s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1ll</span>*s*(s+<span class="number">1</span>)%MOD*(s+s+<span class="number">1</span>)%MOD*inv6%MOD;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ans</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> a;</span><br><span class="line">  a=<span class="number">1ll</span>*<span class="built_in">F</span>(n)*<span class="built_in">F</span>(m)%MOD;</span><br><span class="line">  a=(a+<span class="number">1ll</span>*n*<span class="built_in">G</span>(m,m)+<span class="number">1ll</span>*m*<span class="built_in">G</span>(m,n))%MOD;</span><br><span class="line">  a=<span class="number">1ll</span>*(a<span class="number">-1ll</span>*m*m%MOD*n)%MOD;</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">T</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> sum=<span class="built_in">ans</span>();</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> l=<span class="number">1</span>,r;l&lt;=m;l=r+<span class="number">1</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    r=<span class="built_in">min</span>(n/(n/l),m/(m/l));</span><br><span class="line">    sum=(sum<span class="number">-1ll</span>*((n/l)%MOD*(m/l))%MOD*(<span class="built_in">S</span>(r)-<span class="built_in">S</span>(l<span class="number">-1</span>))%MOD)%MOD;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> (sum%MOD+MOD)%MOD;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">  cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">  cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">  cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">  <span class="keyword">if</span>(m&gt;n) <span class="built_in">swap</span>(m,n);</span><br><span class="line">  cout&lt;&lt;<span class="built_in">T</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2022/05/26/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E4%B8%8E%E4%B9%98%E6%B3%95%E9%80%86%E5%85%83/"
+      title="线性同余与乘法逆元"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        线性同余与乘法逆元
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right  disabled "
+     >
+
+    <p class="title-text">
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 Cuiyi_SAI<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

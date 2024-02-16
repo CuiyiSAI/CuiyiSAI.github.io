@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>Miller Rabin 判素算法 | Cuiyi_SAI&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="引入给出 $t(t\le500)$ 个正整数 $x(x\le2^{63}-1)$，判断 $x$ 是否为质数。  Miller Rabin 素性检验显然在这个 $x$ 的范围下，试除法判断质数是不行的。 $\mathbf{Miller Rabin}$ 素性检验就是一种用来 判断大数是否为质数 的 随机性 算法。它在计算机科学中的用途是用来判断工业质数 $(\ge2^{1024}的质数)$，在这个范围">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Miller Rabin 判素算法">
+<meta property="og:url" content="http://cuiyisai.github.io/2022/06/12/Miller%20Rabin%20%E5%88%A4%E7%B4%A0%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Cuiyi_SAI&#39;s blog">
+<meta property="og:description" content="引入给出 $t(t\le500)$ 个正整数 $x(x\le2^{63}-1)$，判断 $x$ 是否为质数。  Miller Rabin 素性检验显然在这个 $x$ 的范围下，试除法判断质数是不行的。 $\mathbf{Miller Rabin}$ 素性检验就是一种用来 判断大数是否为质数 的 随机性 算法。它在计算机科学中的用途是用来判断工业质数 $(\ge2^{1024}的质数)$，在这个范围">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-03T14:19:22.000Z">
+<meta property="article:author" content="Cuiyi_SAI">
+<meta property="article:tag" content="OI 相关">
+<meta property="article:tag" content="数学">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/usericon/488775.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://images5.alphacoders.com/585/585645.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Cuiyi_SAI's blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">首页</a>
+    
+      <a class="main-nav-link" href="/archives">印记</a>
+    
+      <a class="main-nav-link" href="/about">关于我</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">首页</a>
+    
+      <a class="nav-dropdown-link" href="/archives">印记</a>
+    
+      <a class="nav-dropdown-link" href="/about">关于我</a>
+    
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=https://cdn.luogu.com.cn/upload/image_hosting/4bbjia3t.png></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">Cuiyi_SAI </div>
+      <div class="dot"></div>
+      <div class="subtitle">人只有醒来后才知道自己睡了一觉 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://www.luogu.com.cn/user/488775" title="luogu"><i class="fa-solid fa-laptop-code""></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://space.bilibili.com/2013005981?spm_id_from=333.1007.0.0" title="bilibili"><i class="fa-brands fa-bilibili"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/CuiyiSAI" title="GitHub"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">标签</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/OI-%E7%9B%B8%E5%85%B3/" rel="tag">OI 相关</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/web-%E5%BC%80%E5%8F%91/" rel="tag">web 开发</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/" rel="tag">项目开发</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Miller Rabin 判素算法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        Miller Rabin 判素算法
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2022-06-11T16:00:00.000Z" itemprop="datePublished">2022-06-12</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            1.2k 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OI-%E7%9B%B8%E5%85%B3/" rel="tag">OI 相关</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>给出 $t<del>(t\le500)$ 个正整数 $x</del>(x\le2^{63}-1)$，判断 $x$ 是否为质数。</p>
+<hr>
+<h2 id="Miller-Rabin-素性检验"><a href="#Miller-Rabin-素性检验" class="headerlink" title="Miller Rabin 素性检验"></a>Miller Rabin 素性检验</h2><p>显然在这个 $x$ 的范围下，试除法判断质数是不行的。</p>
+<p>$\mathbf{Miller Rabin}$ 素性检验就是一种用来 <strong>判断大数是否为质数</strong> 的 <strong>随机性</strong> 算法。<br>它在计算机科学中的用途是用来判断工业质数 $(\ge2^{1024}的质数)$，在这个范围下它的判断是否正确存在随机性，但是在 $OI$ 范围下 $(\le 2^{63}-1)$ 确是一种 <strong>错误率极低</strong> 的 <strong>确定性</strong> 算法。</p>
+<p>在 引入 的问题中，我们可以考虑使用 $\mathbf{Miller Rabin}$ 素性检验来判断质数。<br>在 $\mathbf{Miller Rabin}$ 素性检验中，我们要先了解它判断素数的理论基础：</p>
+<ul>
+<li>费马素性检验</li>
+<li>二次探测定理</li>
+</ul>
+<hr>
+<h2 id="费马素性检验"><a href="#费马素性检验" class="headerlink" title="费马素性检验"></a>费马素性检验</h2><p>费马小定理：</p>
+<script type="math/tex; mode=display">
+若p是质数，\gcd(a,p)=1,则\ a^{p-1}\equiv1\pmod p</script><p>证明：</p>
+<p>$考虑P=\{m_1,m_2,m_3,\cdots ,m_{p-1}\}，m_i&lt;p，显然有 m_i\not\equiv m_j\pmod p\\\because \gcd(a,p)=1\\\therefore 对于Q=\{a\cdot m_1,a\cdot m_2,a\cdot m_3,\cdots,a\cdot m_{p-1}\},也有 a\cdot m_i\not\equiv a\cdot m_j\pmod p\~\\利用同余式的性质，我们对这两个两两元素之间不同余的集合联利，得\\\prod\limits_{i=1}^{p-1}a\cdot m_i\equiv \prod\limits_{i=1}^{p-1} m_i\pmod p\\a^{p-1}\prod\limits_{i=1}^{p-1} m_i\equiv \prod\limits_{i=1}^{p-1}m_i\pmod p\\a^{p-1}\equiv 1\pmod p\\证毕$</p>
+<p>若对证明中的同余性质仍有不理解，可以看<a target="_blank" rel="noopener" href="https://blog.csdn.net/SAI_2021/article/details/124359891">这里</a></p>
+<p>利用费马小定理这个有力的工具，在判断 $x$ 是否为质数时，我们或许会有这么一种思路：对于要判定的 $x$ ，我们随机选择一个与 $x$ 互质的底数 $a$ ，若 $a^{x-1}\equiv 1\pmod x$，则 $x$ 为质数。</p>
+<p>此方法被称为<strong>费马素性检验</strong>。</p>
+<p>稍微尝试，好像真的可行诶！但是别着急，这个想法是错误的，因为存在这么一类<strong>伪质数</strong> （卡迈克尔数）$x$，也有 $a^{x-1}\equiv 1\pmod x$，但 $x$ 是合数！</p>
+<p>因此，单独使用费马素性检验，在小部分情况下会对合数进行误判，所以我们还需要一个关于质数的定理进行二次判断。</p>
+<hr>
+<h2 id="二次探测定理"><a href="#二次探测定理" class="headerlink" title="二次探测定理"></a>二次探测定理</h2><script type="math/tex; mode=display">
+考虑 p 为质数，a 与 p 互质，若 a^2\equiv 1\pmod p，则有\\
+p\mid(a^2-1)\\
+p\mid (a+1)(a-1)\\
+\therefore p\mid (a+1) 或 p\mid (a-1)\\
+\therefore a\equiv \pm1\\
+~\\
+\therefore 若 a<p，a=p-1或a=1</script><p>因此，对于每个要判断的 $x$ ,我们都随机选取一个底数 $a&lt;x$，若 $a^2\equiv 1\pmod x$，则判断 $a$ 是否为 $1$ 或 $x-1$，是则 $x$ <strong>大概率</strong>是个质数，否则 $x$ 一定不是个质数。</p>
+<p>然而，二次探测定理也仍然会出现 “漏洞”，依旧存在一类合数 $x$ 使得任意 $a^2\equiv 1\pmod x$ 时 $a\ne 1$ 且 $a\ne x-1$</p>
+<p>那么，费马素性检验和二次探测定理都不可行，是否说明我们要找到第三种 <strong>确定性</strong> 的定理来判断质数呢？也不需要。</p>
+<p>我们可以考虑将费马素性检验与二次探测定理一起使用，对这个数是否为质数进行<strong>双重判断</strong>。</p>
+<p>那么，只有同时满足费马素性检验和二次探测定理的 $x$ 是个质数。这是否<strong>一定</strong>正确呢？也是无法保证的，存在那么<strong>极少</strong>的合数，同时满足这两个定理。</p>
+<p>但是显然，这种同时满足两个定理的合数，要比满足单一定理的合数要少的多。通俗的说，若一个数 $x$ 满足同时满足两个定理，那么它是质数的概率可以达到 $99\%$。而如果我们对同一个 $x$ 都使用多个不同的底数 $a$ 进行定理验证，那么这个误判的概率将进一步缩小，可以直接忽略。</p>
+<p>因此，<strong>同时使用费马素性检验和二次探测定理</strong> 进行判素在 $OI$ 数据范围内是个正确性保证的<strong>确定性</strong>算法，同时它也是 $\mathbf{Miller Rabin}$ 素性检验的原理所在。</p>
+<hr>
+<h2 id="Miller-Rabin-算法"><a href="#Miller-Rabin-算法" class="headerlink" title="Miller Rabin 算法"></a>Miller Rabin 算法</h2><p>$\mathbf{Miller Rabin}$ 算法，即在程序上实现 $\mathbf{Miller Rabin}$ 素性检验，本质上也是在实现费马素性检验的判断中同时进行二次探测检验。</p>
+<p>考虑判断 $x$ 是否为质数，先将 $x-1$ 分解为 $2^k\cdot t，k,t\in \N$<br>选择一个 $a$ 作为费马和二次探测的底数，然后使 $a^t$ 不断平方，在这个过程中运用二次探测定理检验，即判断是否当 $(a^t)^2\equiv 1\pmod x$ 时 $a^t\equiv \pm 1\pmod x$，否则 $x$ 不是质数。<br>很显然平方的过程执行 $k$ 次后， $a$ 的指数将变为 $x-1$，此时再运用费马素性检验判断是否 $a^{x-1}\equiv 1\pmod x$,否则 $x$ 不是质数</p>
+<p>若 $x$ 在上述过程中都没被 $pass$ 掉，则 $x$ <del>一定</del> 大概率是个质数。</p>
+<p>如果担心算法被卡，我们可以进一步降低误判的概率，使用多组底数 $a$ 进行如上操作验证，只有当所用的所有的底数 $a$ 都可以使得 $x$ 满足两条定理时，$x$ 才是质数。</p>
+<p>底数 $a$ 到底怎么取，$\color{Red}wangrx\color{balck}$ 大佬给出了答案：</p>
+<ul>
+<li>当 $x\le 2^{32}$ 时，选取 $2,7,612,7,61$ 三个底数即可</li>
+<li>当 $x\le 2^{63}$ 时，选取$2,325,9375,28178,450775,9780504,17952650222,325,9375,28178,450775,9780504,1795265022$七个底数即可。</li>
+</ul>
+<p>至此，$\mathbf{Miller Rabin}$ 素性检验本是一个带有不确定性的检验方法，但在 $OI$ 数据范围内，我们可以通过增加底数的方式使其成为了一个确定性的算法，因此可以运用于实践当中。</p>
+<h2 id="CODE"><a href="#CODE" class="headerlink" title="CODE"></a>CODE</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int __int128</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">long</span> <span class="type">long</span> t,x;</span><br><span class="line"><span class="type">long</span> <span class="type">long</span> prime[<span class="number">9</span>]=&#123;<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">13</span>,<span class="number">17</span>,<span class="number">37</span>&#125;; <span class="comment">//底数取值</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ksm</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> mod)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> sum=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span>(b)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(b&amp;<span class="number">1</span>) sum=sum*a%mod;</span><br><span class="line">		a=a*a%mod;</span><br><span class="line">		b&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> sum%mod;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">Miller_Rabin</span><span class="params">(<span class="type">int</span> p,<span class="type">int</span> a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> k=<span class="number">0</span>,t=p<span class="number">-1</span>,cnt;</span><br><span class="line">	<span class="keyword">while</span>(!(t&amp;<span class="number">1</span>)) t&gt;&gt;=<span class="number">1</span>,k++;  <span class="comment">//找到上述算法流程中的 t 和 k</span></span><br><span class="line">	a=<span class="built_in">ksm</span>(a,t,p);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=k;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(a*a%p==<span class="number">1</span>)</span><br><span class="line">		  <span class="keyword">if</span>(a!=<span class="number">1</span>&amp;&amp;a!=p<span class="number">-1</span>) <span class="keyword">return</span> <span class="literal">false</span>;  <span class="comment">//二次探测定理</span></span><br><span class="line">		 a=a*a%p;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(a!=<span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;  <span class="comment">//费马素性检验判断</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isprime</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;<span class="number">9</span>;i++)  <span class="comment">//多次 Miller Rabin 验证</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(x==prime[i]) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">if</span>(x%prime[i]==<span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;  <span class="comment">//特判掉一些简单情况</span></span><br><span class="line">		<span class="keyword">if</span>(!<span class="built_in">Miller_Rabin</span>(x,prime[i])) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	cin&gt;&gt;t;</span><br><span class="line">	<span class="keyword">while</span>(t)</span><br><span class="line">	&#123;</span><br><span class="line">		t--;</span><br><span class="line">		cin&gt;&gt;x;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">isprime</span>(x)) cout&lt;&lt;<span class="string">&quot;YES&quot;</span>&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">		<span class="keyword">else</span> cout&lt;&lt;<span class="string">&quot;NO&quot;</span>&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2022/07/09/largrange%20%E6%8F%92%E5%80%BC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"
+      title="largrange 插值学习笔记"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        largrange 插值学习笔记
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2022/05/31/%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0%E5%88%9D%E6%AD%A5/"
+      title="欧拉函数初步"
+     >
+
+    <p class="title-text">
+      
+        欧拉函数初步
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 Cuiyi_SAI<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

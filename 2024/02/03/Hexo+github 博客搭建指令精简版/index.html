@@ -14,18 +14,23 @@
   
 
   
-  <title>归档 | Cuiyi_SAI&#39;s blog</title>
+  <title>Hexo+Github 博客搭建指令精简版 | Cuiyi_SAI&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Cuiyi_SAI&#39;s blog">
-<meta property="og:url" content="http://cuiyisai.github.io/archives/index.html">
+  <meta name="description" content="前言这篇博客主要是给已经掌握了用 Hexo 在 github.io 搭建博客的人使用，仅作为一个类似备忘录的东西作为参考——提供一些在转移博客后台时可能用到的指令。  预备环境搭建 Hexo blog 后台需要一下工具：  nodejs git VScode（或其他文本编辑器） 也许需要一个 steam++ 为你的网站加速  我当然已经为你们准备好了。  部署 Hexo来到装 blog 的文件夹，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo+Github 博客搭建指令精简版">
+<meta property="og:url" content="http://cuiyisai.github.io/2024/02/03/Hexo+github%20%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E4%BB%A4%E7%B2%BE%E7%AE%80%E7%89%88/index.html">
 <meta property="og:site_name" content="Cuiyi_SAI&#39;s blog">
+<meta property="og:description" content="前言这篇博客主要是给已经掌握了用 Hexo 在 github.io 搭建博客的人使用，仅作为一个类似备忘录的东西作为参考——提供一些在转移博客后台时可能用到的指令。  预备环境搭建 Hexo blog 后台需要一下工具：  nodejs git VScode（或其他文本编辑器） 也许需要一个 steam++ 为你的网站加速  我当然已经为你们准备好了。  部署 Hexo来到装 blog 的文件夹，">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-03T14:05:46.000Z">
 <meta property="article:author" content="Cuiyi_SAI">
+<meta property="article:tag" content="web 开发">
 <meta name="twitter:card" content="summary">
   
   
@@ -153,233 +158,126 @@
     <div id="content-body">
        
 
-<div class="archive-main-card">
-    <div class="archive-top">
-      <div class="main-title-bar">
-        <div class="main-title-dot"></div>
-        <h1 class="article-title">归档</h1>
-      </div>    
+
+<article id="post-Hexo+github 博客搭建指令精简版" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        Hexo+Github 博客搭建指令精简版
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-02-02T16:00:00.000Z" itemprop="datePublished">2024-02-03</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            865 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web-%E5%BC%80%E5%8F%91/" rel="tag">web 开发</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这篇博客主要是给已经掌握了用 Hexo 在 github.io 搭建博客的人使用，仅作为一个类似备忘录的东西作为参考——提供一些在转移博客后台时可能用到的指令。</p>
+<hr>
+<h1 id="预备环境"><a href="#预备环境" class="headerlink" title="预备环境"></a>预备环境</h1><p>搭建 Hexo blog 后台需要一下工具：</p>
+<ul>
+<li>nodejs</li>
+<li>git</li>
+<li>VScode（或其他文本编辑器）</li>
+<li>也许需要一个 steam++ 为你的网站加速</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://download.csdn.net/download/SAI_2021/88805468?spm=1001.2014.3001.5503">我当然已经为你们准备好了</a>。</p>
+<hr>
+<h2 id="部署-Hexo"><a href="#部署-Hexo" class="headerlink" title="部署 Hexo"></a>部署 Hexo</h2><p>来到装 blog 的文件夹，打开cmd 设置 GitHub 账户信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;用户名&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;注册email&quot;</span></span><br></pre></td></tr></table></figure>
+<p>然后就是建立一个 SSH 密钥，用于后续上传用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;注册的邮箱地址&quot;</span></span><br></pre></td></tr></table></figure>
+<p>输入完指令后连续按4下回车，若看到一个随机图案生成则成功。</p>
+<p>然后把路径 <code>C:\Users\用户名\.ssh\id_rsa.pub</code> 下的东西复制到 github 账户新建的 SSH Keys 下即可。</p>
+<p>接着来到博客的跟目录，开始准备 Hexo，按一下顺序输入指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<p>至此，Hexo 部署完毕。</p>
+<hr>
+<h1 id="博文上传"><a href="#博文上传" class="headerlink" title="博文上传"></a>博文上传</h1><p>写好文章保存为 <code>.md</code> 格式的文件，然后放在 blog 根目录下的 <code>/source/_posts</code> 里面，最后按顺序输入一下指令即可上传<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure><br>实践中往往最后一步会出现问题：若出现 <code>SSL certificate problem: unable to get local issuer certificate</code> 这种问题，那么尝试输入以下指令或许能解决。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.sslVerify <span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/Venus/build-hexo-github-blog">从零搭建 Hexo + Github 博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44014995/article/details/109900149">解决：git SSL certificate problem: unable to get local issuer certificate</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/sjt19910311/article/details/83685616">使用git config —global设置用户名和邮件</a></li>
+</ul>
+
+        
+      </div>
+
+         
     </div>
     
-    
-      
-      
-        
-        <div class="year-line">
-            <div class="year-num">2024</div>
-            <div class="dot-wrapper">
-                <div class="dot"></div>
-            </div>
-            <div class="article-count">3 篇文章</div>
-        </div>
-      
-      <a class="archive-article-link" href="/2024/02/06/2024-han-jia-xun-lian/" title="2024 新年的印记-寒假 OI 训练">
-        <div class="date">02-06</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    2024 新年的印记-寒假 OI 训练
-                
-            </div>
-        </div>
-        <div class="tags">
-            #OI 相关
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/02/03/Hexo+github%20%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E4%BB%A4%E7%B2%BE%E7%AE%80%E7%89%88/" title="Hexo+Github 博客搭建指令精简版">
-        <div class="date">02-03</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    Hexo+Github 博客搭建指令精简版
-                
-            </div>
-        </div>
-        <div class="tags">
-            #web 开发
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/01/29/USACO%202024%20JAN%20Cu%20and%20Ag%E9%A2%98%E8%A7%A3/" title="USACO 2024 JAN Cu and Ag题解">
-        <div class="date">01-29</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    USACO 2024 JAN Cu and Ag题解
-                
-            </div>
-        </div>
-        <div class="tags">
-            #OI 相关
-        </div>
-      </a>
-    
-      
-      
-        
-        <div class="year-line">
-            <div class="year-num">2023</div>
-            <div class="dot-wrapper">
-                <div class="dot"></div>
-            </div>
-            <div class="article-count">3 篇文章</div>
-        </div>
-      
-      <a class="archive-article-link" href="/2023/07/14/VScode%20%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" title="VScode 基础使用教程">
-        <div class="date">07-14</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    VScode 基础使用教程
-                
-            </div>
-        </div>
-        <div class="tags">
-            #OI 相关 #项目开发
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2023/02/19/%E5%90%8C%E4%BD%99%E5%88%9D%E6%AD%A5%E6%80%A7%E8%B4%A8/" title="同余初步性质">
-        <div class="date">02-19</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    同余初步性质
-                
-            </div>
-        </div>
-        <div class="tags">
-            #OI 相关 #数学
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2023/01/12/pycharm%20python%20%E7%A8%8B%E5%BA%8F%E6%89%93%E5%8C%85%E7%9B%B8%E5%85%B3/" title="pycharm python 程序打包相关">
-        <div class="date">01-12</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    pycharm python 程序打包相关
-                
-            </div>
-        </div>
-        <div class="tags">
-            #项目开发
-        </div>
-      </a>
-    
-      
-      
-        
-        <div class="year-line">
-            <div class="year-num">2022</div>
-            <div class="dot-wrapper">
-                <div class="dot"></div>
-            </div>
-            <div class="article-count">4 篇文章</div>
-        </div>
-      
-      <a class="archive-article-link" href="/2022/07/19/%E6%B5%85%E8%B0%88%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3/" title="浅谈牛顿迭代">
-        <div class="date">07-19</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    浅谈牛顿迭代
-                
-            </div>
-        </div>
-        <div class="tags">
-            #数学
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2022/07/09/largrange%20%E6%8F%92%E5%80%BC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="largrange 插值学习笔记">
-        <div class="date">07-09</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    largrange 插值学习笔记
-                
-            </div>
-        </div>
-        <div class="tags">
-            #OI 相关 #数学
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2022/06/12/Miller%20Rabin%20%E5%88%A4%E7%B4%A0%E7%AE%97%E6%B3%95/" title="Miller Rabin 判素算法">
-        <div class="date">06-12</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    Miller Rabin 判素算法
-                
-            </div>
-        </div>
-        <div class="tags">
-            #OI 相关 #数学
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2022/05/31/%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0%E5%88%9D%E6%AD%A5/" title="欧拉函数初步">
-        <div class="date">05-31</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    欧拉函数初步
-                
-            </div>
-        </div>
-        <div class="tags">
-            #OI 相关 #数学
-        </div>
-      </a>
-    
+     
   </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2024/02/06/2024-han-jia-xun-lian/"
+      title="2024 新年的印记-寒假 OI 训练"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        2024 新年的印记-寒假 OI 训练
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/01/29/USACO%202024%20JAN%20Cu%20and%20Ag%E9%A2%98%E8%A7%A3/"
+      title="USACO 2024 JAN Cu and Ag题解"
+     >
+
+    <p class="title-text">
+      
+        USACO 2024 JAN Cu and Ag题解
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
     </div>
     <div id="footer-wrapper">
       <footer id="footer">

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>pycharm python 程序打包相关 | Cuiyi_SAI&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="前言  终于入门了python打包这个大话题，将目前学到的技能分享一下。    pycharm启动虚拟环境pipenv 缩小打包  和很多博客说的一样，打包那么大是因为打包了多余的库，因此想要缩小就需要一个干净的，没有多余的库的环境进行打包。也就是虚拟环境。 想要在 pycharm 启动虚拟环境，先要安装一个 pipenv。按下 win+r 后输入 cmd 打开命令面板，输入 pip">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pycharm python 程序打包相关">
+<meta property="og:url" content="http://cuiyisai.github.io/2023/01/12/pycharm%20python%20%E7%A8%8B%E5%BA%8F%E6%89%93%E5%8C%85%E7%9B%B8%E5%85%B3/index.html">
+<meta property="og:site_name" content="Cuiyi_SAI&#39;s blog">
+<meta property="og:description" content="前言  终于入门了python打包这个大话题，将目前学到的技能分享一下。    pycharm启动虚拟环境pipenv 缩小打包  和很多博客说的一样，打包那么大是因为打包了多余的库，因此想要缩小就需要一个干净的，没有多余的库的环境进行打包。也就是虚拟环境。 想要在 pycharm 启动虚拟环境，先要安装一个 pipenv。按下 win+r 后输入 cmd 打开命令面板，输入 pip">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/521f96aaa86c4cb0b3c674be2ec48565.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2b2c82fa17084bae84a0f12e92dd3c45.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/61f3d7a253214bdc8473cd6d12e5e987.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/ed9d0ed7e2d74fa29e0f700e7465f2ea.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/5892b62cdf6b4203a2bc0f9b33cce6a1.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/625124fbe7eb4c1fb8fb6319aa5e7893.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/5537b6bfa580440ca17cf900e177f6a0.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/32fe594095654275b6bb5a683fb0d48c.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/fcbe95897610499fa0ec876f5609216f.png">
+<meta property="article:published_time" content="2023-01-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-03T14:10:18.000Z">
+<meta property="article:author" content="Cuiyi_SAI">
+<meta property="article:tag" content="项目开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/521f96aaa86c4cb0b3c674be2ec48565.png">
+  
+  
+    <link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/usericon/488775.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://images5.alphacoders.com/585/585645.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Cuiyi_SAI's blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">首页</a>
+    
+      <a class="main-nav-link" href="/archives">印记</a>
+    
+      <a class="main-nav-link" href="/about">关于我</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">首页</a>
+    
+      <a class="nav-dropdown-link" href="/archives">印记</a>
+    
+      <a class="nav-dropdown-link" href="/about">关于我</a>
+    
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=https://cdn.luogu.com.cn/upload/image_hosting/4bbjia3t.png></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">Cuiyi_SAI </div>
+      <div class="dot"></div>
+      <div class="subtitle">人只有醒来后才知道自己睡了一觉 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://www.luogu.com.cn/user/488775" title="luogu"><i class="fa-solid fa-laptop-code""></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://space.bilibili.com/2013005981?spm_id_from=333.1007.0.0" title="bilibili"><i class="fa-brands fa-bilibili"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/CuiyiSAI" title="GitHub"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">标签</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/OI-%E7%9B%B8%E5%85%B3/" rel="tag">OI 相关</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/web-%E5%BC%80%E5%8F%91/" rel="tag">web 开发</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/" rel="tag">项目开发</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-pycharm python 程序打包相关" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        pycharm python 程序打包相关
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2023-01-11T16:00:00.000Z" itemprop="datePublished">2023-01-12</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            3.7k 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/" rel="tag">项目开发</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p><svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><br>    <path stroke-linecap="round" d="M5,0 0,2.5 5,5z" id="raphael-marker-block" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
+</svg></p>
+<p><h1><a id="_0"></a>前言</h1> </p>
+<p>终于入门了python打包这个大话题，将目前学到的技能分享一下。</p> 
+<hr> 
+<h1><a id="pycharmpipenv__6"></a>pycharm启动虚拟环境pipenv 缩小打包</h1> 
+<p>和很多博客说的一样，打包那么大是因为打包了多余的库，因此想要缩小就需要一个干净的，没有多余的库的环境进行打包。也就是虚拟环境。<br> 想要在 pycharm 启动虚拟环境，先要安装一个 pipenv。按下 <kbd>win</kbd>+<kbd>r</kbd> 后输入 cmd 打开命令面板，输入 <code>pip install pipenv</code> 即可安装。</p> 
+<p>安装后，我们需要得到名为 “pipenv.exe” 文件的路径，也就是 pipenv 虚拟环境的安装路径。查看的方法有很多，或许是能力原因本人试过的都不怎么好使，还是最朴素的方法最稳定：</p> 
+<p><img src="https://img-blog.csdnimg.cn/521f96aaa86c4cb0b3c674be2ec48565.png" alt="在这里插入图片描述"><br> 是的，直接点开此电脑在右上角搜索文件即可（慢是慢了点但是亲测有效）！<br> 然后我们打开 pycharm 选择新建项目</p> 
+<p><img src="https://img-blog.csdnimg.cn/2b2c82fa17084bae84a0f12e92dd3c45.png" alt="在这里插入图片描述"></p> 
+<p>点击三角形符号， pycharm 就会为这个项目创建一个干净的虚拟环境。</p> 
+<p><img src="https://img-blog.csdnimg.cn/61f3d7a253214bdc8473cd6d12e5e987.png" alt="在这里插入图片描述"></p> 
+<p>然后选择好虚拟环境的类型，也就是上面安装的 pipenv。<br> 如果pipenv可执行文件那一栏是空着的，那么就把上一步中得到的 “pipenv.exe” 的路径复制过去即可。<br> 一切就绪，点击创建。</p> 
+<p>至此如果都成功，那么恭喜你得到了一个干净的python编程环境，在这个环境下打包是最小的。但是具体实现还有一些细节。</p> 
+<p>点击左下方栏目中的 python 软件包，那么将会显示在当前环境下安装的所有的库<br> <img src="https://img-blog.csdnimg.cn/ed9d0ed7e2d74fa29e0f700e7465f2ea.png" alt="在这里插入图片描述"><br> 可以发现非常的干净，只有三个库。但是这么点库是无法达成项目需求的，因此我们需要添加软件包到当前环境上。<br> <img src="https://img-blog.csdnimg.cn/5892b62cdf6b4203a2bc0f9b33cce6a1.png" alt="在这里插入图片描述"><br> 这一步很重要，切记<strong>不要在本地的cmd <code>pip install</code> 安装第三方库</strong>后，直接在虚拟环境中使用，这样子库内还是会附带很多多余的东西，就丧失了使用虚拟环境的意义。</p> 
+<p>那么怎样在 pycharm 提供的虚拟环境下安装呢。</p> 
+<p>依旧是下方栏目，选择“终端”</p> 
+<p><img src="https://img-blog.csdnimg.cn/625124fbe7eb4c1fb8fb6319aa5e7893.png" alt="在这里插入图片描述"><br> 然后就会出现一个类似cmd的控制台。或许这时候你就会迫不及待的在这里 <code>pip install</code> 各种各样的库，但是请注意，左上方这里显示了“本地”，这是本地的 cmd，并不是我们虚拟环境的。<br> <img src="https://img-blog.csdnimg.cn/5537b6bfa580440ca17cf900e177f6a0.png" alt="在这里插入图片描述"></p> 
+<p>那么怎么打开虚拟环境的 cmd 进行安装呢，操作步骤非常简单。<br> 点击“本地”旁边的向下箭头，选择 “command prompt” ,然后就切换到了虚拟环境提供的 cmd 了。<br> <img src="https://img-blog.csdnimg.cn/32fe594095654275b6bb5a683fb0d48c.png" alt="在这里插入图片描述"><br> <img src="https://img-blog.csdnimg.cn/fcbe95897610499fa0ec876f5609216f.png" alt="在这里插入图片描述"><br> 我们最终在这个地方 <code>pip install Pyinstaller</code> 以及其他各种的库，然后在这里输入 <code>Pyinstaller</code> 命令打包即可。</p> 
+<p>这个方法打包后效果非常显著，本人一个用本地 cmd 打包 300M 的项目用了虚拟环境后只有 10M。</p> 
+<hr> 
+<h1><a id="Pyinstaller__52"></a>Pyinstaller 将资源与程序一同打包</h1> 
+<p>相信大家编写的程序都经常需要调用存在本地的各种图片啊字体什么的对吧。但是直接 <code>Pyinstaller</code> 却不能将这些资源一起打包进 exe 文件里。也就是说，如果打包后的程序按照程序中的对应路径中找不到资源，那么就会报错。<br> 那不行啊，如果我们的程序不是在本机运行，那么难不成我们还要把资源一起和exe到处移动，多难看啊？于是就想，如何将资源一起打包进一个exe中呢。</p> 
+<p>首先，直接 <code>Pyinstaller</code> 打包，项目目录下会新增两个文件夹：dist、build。把这两个都删了。<br> 是的，把这次打包出来的exe也删了。</p> 
+<p><code>Pyinstaller</code> 打包后还会产生一个文件 XXX.spec，文件名就是打包的程序名。<br> 这个 spec 文件中包含着打包的所有信息。他也许长这样：</p> 
+<pre><code class="prism language-python"><span class="token comment"># -*- mode: python ; coding: utf-8 -*-</span>
+
+
+block_cipher <span class="token operator">=</span> <span class="token boolean">None</span>
+
+
+a <span class="token operator">=</span> Analysis<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span><span class="token string">'XXX.py'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    pathex<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    binaries<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    datas<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    hiddenimports<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    hookspath<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    hooksconfig<span class="token operator">=</span><span class="token punctuation">&#123;<!-- --></span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    runtime_hooks<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    excludes<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    win_no_prefer_redirects<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    win_private_assemblies<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    cipher<span class="token operator">=</span>block_cipher<span class="token punctuation">,</span>
+    noarchive<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+pyz <span class="token operator">=</span> PYZ<span class="token punctuation">(</span>a<span class="token punctuation">.</span>pure<span class="token punctuation">,</span> a<span class="token punctuation">.</span>zipped_data<span class="token punctuation">,</span> cipher<span class="token operator">=</span>block_cipher<span class="token punctuation">)</span>
+
+exe <span class="token operator">=</span> EXE<span class="token punctuation">(</span>
+    pyz<span class="token punctuation">,</span>
+    a<span class="token punctuation">.</span>scripts<span class="token punctuation">,</span>
+    a<span class="token punctuation">.</span>binaries<span class="token punctuation">,</span>
+    a<span class="token punctuation">.</span>zipfiles<span class="token punctuation">,</span>
+    a<span class="token punctuation">.</span>datas<span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    name<span class="token operator">=</span><span class="token string">'XXX'</span><span class="token punctuation">,</span>
+    debug<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    bootloader_ignore_signals<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    strip<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    upx<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+    upx_exclude<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    runtime_tmpdir<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    console<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    disable_windowed_traceback<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    argv_emulation<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    target_arch<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    codesign_identity<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    entitlements_file<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    icon<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'XXX.ico'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+</code></pre> 
+<p>我们打包的信息里面应有尽有，最上面的<code>['XXX.py'],</code>是打包的程序名，最下面的 <code>icon=['XXX.ico'],</code><br> 是我们打包exe的图标。<br> 既然我们在 <code>Pyinstaller</code> 时输入的信息里面都有，那么就可以利用这个文件，使我们的资源也加入打包队列。</p> 
+<p><code>binaries=[],</code>就是用于打包资源的。<br> 可以看到它默认是空的，如果我们要打包资源，就往里面增加元素即可。具体格式的话是一个二元组<code>(url1,url2)</code></p> 
+<ul><li>url1 是用字符串表示的要打包的资源的相对路径</li><li>url2 是用字符串表示的运行exe后要把资源解压到的文件夹的相对路径。如果想解压到根目录，那么url2就是 ‘.’（注意有点号）</li></ul> 
+<p>例如我要将 logo.png 和 air_mitalic.ttf 一起打包进 exe 。其中，logo.png 和 air_mitalic.ttf 存放在项目的根目录，打包解压后我想把他们再次放到根目录，那么 spec 文件应该修改为</p> 
+<pre><code class="prism language-python"><span class="token comment"># -*- mode: python ; coding: utf-8 -*-</span>
+
+
+block_cipher <span class="token operator">=</span> <span class="token boolean">None</span>
+
+
+a <span class="token operator">=</span> Analysis<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span><span class="token string">'function_vision.py'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    pathex<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    binaries<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'air_mitalic.ttf'</span><span class="token punctuation">,</span><span class="token string">'.'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'logo.png'</span><span class="token punctuation">,</span><span class="token string">'.'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    datas<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    hiddenimports<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    hookspath<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    hooksconfig<span class="token operator">=</span><span class="token punctuation">&#123;<!-- --></span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    runtime_hooks<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    excludes<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    win_no_prefer_redirects<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    win_private_assemblies<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    cipher<span class="token operator">=</span>block_cipher<span class="token punctuation">,</span>
+    noarchive<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+pyz <span class="token operator">=</span> PYZ<span class="token punctuation">(</span>a<span class="token punctuation">.</span>pure<span class="token punctuation">,</span> a<span class="token punctuation">.</span>zipped_data<span class="token punctuation">,</span> cipher<span class="token operator">=</span>block_cipher<span class="token punctuation">)</span>
+
+exe <span class="token operator">=</span> EXE<span class="token punctuation">(</span>
+    pyz<span class="token punctuation">,</span>
+    a<span class="token punctuation">.</span>scripts<span class="token punctuation">,</span>
+    a<span class="token punctuation">.</span>binaries<span class="token punctuation">,</span>
+    a<span class="token punctuation">.</span>zipfiles<span class="token punctuation">,</span>
+    a<span class="token punctuation">.</span>datas<span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    name<span class="token operator">=</span><span class="token string">'function_vision'</span><span class="token punctuation">,</span>
+    debug<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    bootloader_ignore_signals<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    strip<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    upx<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+    upx_exclude<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    runtime_tmpdir<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    console<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    disable_windowed_traceback<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    argv_emulation<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    target_arch<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    codesign_identity<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    entitlements_file<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    icon<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'logo.ico'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+</code></pre> 
+<p>修改好 spec 文件后，我们直接打包 spec 文件。在 cmd 中输入 <code>Pyinstaller XXX.spec</code> 即可。注意不要加 <code>-F</code> 或 <code>-D</code> 和其他打包 .py 文件时的命令。</p> 
+<p>打包完之后仍然会出现一个存放在 dist 文件夹中的exe文件，但是我发现运行他是还是资源路径错误报错。<br> 最终，在这篇博客中找到了解决方法。</p> 
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/THMAIL/article/details/106168362?spm=1001.2014.3001.8078">Pyinstaller打包用spec添加资源文件，亲测可用</a></p> 
+<p>原来是因为打包后的资源解压到了一个奇怪的临时目录下面，因此原程序找不到。<br> 那么我们就修改源程序。怎么改，我们使用前人的经验，在程序中写下一个路径解析函数</p> 
+<pre><code class="prism language-python"><span class="token keyword">def</span> <span class="token function">resurce_path</span><span class="token punctuation">(</span>relative_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    base_path<span class="token operator">=</span><span class="token builtin">getattr</span><span class="token punctuation">(</span>sys<span class="token punctuation">,</span><span class="token string">'_MEIPASS'</span><span class="token punctuation">,</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>path<span class="token punctuation">.</span>abspath<span class="token punctuation">(</span>__file__<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  
+    <span class="token keyword">return</span> path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>base_path<span class="token punctuation">,</span>relative_path<span class="token punctuation">)</span>
+</code></pre> 
+<p>每当在代码中需要调用资源的时候加上一个路径解析即可。</p> 
+<pre><code class="prism language-python">logo<span class="token operator">=</span>pygame<span class="token punctuation">.</span>image<span class="token punctuation">.</span>load<span class="token punctuation">(</span>resurce_path<span class="token punctuation">(</span><span class="token string">"logo.png"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre> 
+<p>这样子，我们就可成功得到资源解压后所在的路径。</p> 
+<p>这个方法同样来自 <a target="_blank" rel="noopener" href="https://blog.csdn.net/THMAIL/article/details/106168362?spm=1001.2014.3001.8078">Pyinstaller打包用spec添加资源文件，亲测可用</a>，这里仅为引用。</p> 
+<p>亲测打包后的exe可以得到资源，这样子打包就免去了网上的一些 base64 转码法。</p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2023/02/19/%E5%90%8C%E4%BD%99%E5%88%9D%E6%AD%A5%E6%80%A7%E8%B4%A8/"
+      title="同余初步性质"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        同余初步性质
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2022/07/19/%E6%B5%85%E8%B0%88%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3/"
+      title="浅谈牛顿迭代"
+     >
+
+    <p class="title-text">
+      
+        浅谈牛顿迭代
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 Cuiyi_SAI<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>
