@@ -185,7 +185,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            5.8k 词 
+            6k 词 
           </div>
         </div>
         
@@ -198,18 +198,13 @@
             
               update 2024-02-11 ：话说是不是在这里加一个目录啊，字数已经 3w+ 了欸。
 
-总览
-yes
+总览妙用 $\text{stable_sort}$ $+$ 数据接近有序的排序发现答案有分化然后用二分加速枚举省略不必要的状态加速递归，类似二分以身入局的贪心非常直观从最为容易的决策入手一步步考虑贡献贪心（一般是从最终到初始）从题目展现出特殊的地方入手从简单的状态开始考虑倒推手玩数据 | 补图与原图相关性质考虑问题是否具有特殊性质，如序列必定连续等爆搜剪枝利用 bitset 存储二进制状态，考虑限制转换  
 
-
-$1-24$ P1309 [NOIP2011 普及组] 瑞士轮
+$1-24$
+ P1309 [NOIP2011 普及组] 瑞士轮
 $\small{对排序算法的理解}$ 
 $\large{\text{Solution}}:$ 
-挺有意思的一题，原先按照题意模拟考虑轮用一次 $\text{sort}$ 没想到时限太紧 $\color{darkblue} T$ 了（ $O(R\cdot n\log n)$ 确实慢），但是根据题解的思想直接把 $\text{sort}$ 换成 $\text{stable_sort}$ 居然过了？？？题解思路，考虑胜者每轮都 $+1$ ，负者每轮都不变，因此 胜者所在的集合内部 和 负者所在的集合内部 分数的相对大小关系是不变的，都是有序的。因此问题转化成了将胜负二者这两个有序数列合并的问题，可以采用 $O(n)$ 的归并排序中的方法来合并，总体复杂度 $O(R\cdot n)$。
-
-P1083 [NOIP2012 提高组] 借教室
-$\small{二分加速枚举、线段树、若干水法}$
-$\large{\tex...
+挺有意思的一题，原先按照题意模拟考虑轮用一次 $\text{sort}$ 没想到时限太紧 $\color{darkblue} T$ 了（ $O(R\cdot n\log n)$ 确实慢），但是根据题解的思想直接把 $\text{sort}$ 换成 $\text{stable_sort}$ 居然过了？？？题解思路，考虑胜者...
             
           </div>
         
@@ -1039,5 +1034,21 @@ $考虑P=\{m_1,m_2,m_3,\cdots ,m_{p-1}\}，m_i&lt;p，显然有 m...
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
 </body>
 </html>

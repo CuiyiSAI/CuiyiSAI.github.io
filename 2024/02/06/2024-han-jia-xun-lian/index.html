@@ -20,16 +20,16 @@
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta name="description" content="update 2024-02-11 ：话说是不是在这里加一个目录啊，字数已经 3w+ 了欸。  总览 yes   $1-24$ P1309 [NOIP2011 普及组] 瑞士轮 $\small{对排序算法的理解}$  $\large{\text{Solution}}:$  挺有意思的一题，原先按照题意模拟考虑轮用一次 $\text{sort}$ 没想到时限太紧 $\color{darkblue}">
+  <meta name="description" content="update 2024-02-11 ：话说是不是在这里加一个目录啊，字数已经 3w+ 了欸。  总览妙用 $\text{stable_sort}$ $+$ 数据接近有序的排序发现答案有分化然后用二分加速枚举省略不必要的状态加速递归，类似二分以身入局的贪心非常直观从最为容易的决策入手一步步考虑贡献贪心（一般是从最终到初始）从题目展现出特殊的地方入手从简单的状态开始考虑倒推手玩数据 | 补图与原图相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2024 新年的印记-寒假 OI 训练">
 <meta property="og:url" content="http://cuiyisai.github.io/2024/02/06/2024-han-jia-xun-lian/index.html">
 <meta property="og:site_name" content="Cuiyi_SAI&#39;s blog">
-<meta property="og:description" content="update 2024-02-11 ：话说是不是在这里加一个目录啊，字数已经 3w+ 了欸。  总览 yes   $1-24$ P1309 [NOIP2011 普及组] 瑞士轮 $\small{对排序算法的理解}$  $\large{\text{Solution}}:$  挺有意思的一题，原先按照题意模拟考虑轮用一次 $\text{sort}$ 没想到时限太紧 $\color{darkblue}">
+<meta property="og:description" content="update 2024-02-11 ：话说是不是在这里加一个目录啊，字数已经 3w+ 了欸。  总览妙用 $\text{stable_sort}$ $+$ 数据接近有序的排序发现答案有分化然后用二分加速枚举省略不必要的状态加速递归，类似二分以身入局的贪心非常直观从最为容易的决策入手一步步考虑贡献贪心（一般是从最终到初始）从题目展现出特殊的地方入手从简单的状态开始考虑倒推手玩数据 | 补图与原图相关">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s1.ax1x.com/2018/09/30/ilT4sS.gif">
 <meta property="article:published_time" content="2024-02-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-02-16T15:40:26.000Z">
+<meta property="article:modified_time" content="2024-03-09T10:24:42.000Z">
 <meta property="article:author" content="Cuiyi_SAI">
 <meta property="article:tag" content="OI 相关">
 <meta name="twitter:card" content="summary">
@@ -193,7 +193,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            5.8k 词 
+            6k 词 
           </div>
         </div>
         
@@ -204,15 +204,15 @@
         
           <p>update 2024-02-11 ：<br>话说是不是在这里加一个目录啊，字数已经 3w+ 了欸。</p>
 <hr>
-<h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><ul>
-<li><a href="#$1-25$">yes</a></li>
-</ul>
+<h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><p><a href="#miaoyongstablesort">妙用 $\text{stable_sort}$ $+$ 数据接近有序的排序</a><br><a href="#zhaodaokeerfenxin">发现答案有分化然后用二分加速枚举</a><br><a href="#shenluemeijv">省略不必要的状态加速递归，类似二分</a><br><a href="#yishenrujvtanxin">以身入局的贪心非常直观</a><br><a href="#youjianrushou">从最为容易的决策入手一步步考虑贡献贪心（一般是从最终到初始）</a><br><a href="#1-26-1">从题目展现出特殊的地方入手</a><br><a href="#1-26-2">从简单的状态开始考虑倒推</a><br><a href="#1-26-3">手玩数据 | 补图与原图相关性质</a><br><a href="#1-27-1">考虑问题是否具有特殊性质，如序列必定连续等</a><br><a href="#1-27-2">爆搜剪枝</a><br><a href="#1-27-3">利用 bitset 存储二进制状态，考虑限制转换</a>  </p>
 <hr>
-<h2 id="1-24"><a href="#1-24" class="headerlink" title="$1-24$"></a>$1-24$</h2><p> <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1309" title="P1309 [NOIP2011 普及组] 瑞士轮">P1309 [NOIP2011 普及组] 瑞士轮</a></p>
+<h2 id="1-24"><a href="#1-24" class="headerlink" title="$1-24$"></a>$1-24$</h2><p><span id="miaoyongstablesort"></span></p>
+<p> <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1309" title="P1309 [NOIP2011 普及组] 瑞士轮">P1309 [NOIP2011 普及组] 瑞士轮</a></p>
 <p>$\small{对排序算法的理解}$ </p>
 <p>$\large{\text{Solution}}:$ </p>
 <p>挺有意思的一题，原先按照题意模拟考虑轮用一次 $\text{sort}$ 没想到时限太紧 $\color{darkblue} T$ 了（ $O(R\cdot n\log n)$ 确实慢），但是根据题解的思想直接把 $\text{sort}$ 换成 $\text{stable_sort}$ 居然过了？？？<br>题解思路，考虑胜者每轮都 $+1$ ，负者每轮都不变，因此 胜者所在的集合内部 和 负者所在的集合内部 分数的相对大小关系是不变的，都是有序的。因此问题转化成了将胜负二者这两个<strong>有序数列合并</strong>的问题，可以采用 $O(n)$ 的归并排序中的方法来合并，总体复杂度 $O(R\cdot n)$。</p>
 <hr>
+<p><span id="zhaodaokeerfenxin"></span></p>
 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1083" title="P1083 [NOIP2012 提高组] 借教室">P1083 [NOIP2012 提高组] 借教室</a></p>
 <p>$\small{二分加速枚举、线段树、若干水法}$</p>
 <p>$\large{\text{Solution1}}:$ </p>
@@ -220,16 +220,19 @@
 <p>$\large{\text{Solution2}}:$ </p>
 <p>先处理出完成 $m$ 次操作的序列，然后 $1-n$ 扫一遍，若当前数 $&lt;0$ 那么将操作<strong>从后往前</strong>依次撤回，直到整个序列都合法，那么最后一次撤回的操作即为答案。</p>
 <hr>
+<p><span id="shenluemeijv"></span></p>
 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3612" title="P3612 [USACO17JAN] Secret Cow Code S">P3612 [USACO17JAN] Secret Cow Code S</a></p>
 <p>$\small{递归（分治）}$</p>
 <p>$\large{\text{Solution}}:$ </p>
 <p>可以看出每次操作后的字符串后半部分与上一次的字符串基本一样，所以我们就考虑用这个来递归，每次都会缩小一半的长度。<br>具体的，若 $n&lt;\frac{len}{2}$，那么后半部分是没用的，直接 $len/2$；若 $n&gt;\frac{len}{2}$ ，那么位置 $n$ 是由上一个串的位置 $n-1-len/2$ 翻转得到，递归处理这个子问题即可。</p>
 <hr>
-<h2 id="1-25"><a href="#1-25" class="headerlink" title="$1-25$"></a>$1-25$</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1199" title="P1199 [NOIP2010 普及组] 三国游戏">P1199 [NOIP2010 普及组] 三国游戏</a></p>
+<h2 id="1-25"><a href="#1-25" class="headerlink" title="$1-25$"></a>$1-25$</h2><p><span id="yishenrujvtanxin"></span></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1199" title="P1199 [NOIP2010 普及组] 三国游戏">P1199 [NOIP2010 普及组] 三国游戏</a></p>
 <p>$贪心，带一点博弈论？$<br>思考加代码总用时约 1 小时，代码错误：局部变量未初始化，导致UB。</p>
 <p>$\large{\text{Solution}}:$ </p>
 <p>不管我们开局选哪个武将 $x$，和他默契度最高的武将 $y$ 一定会被电脑抢走。但是默契度次大的武将 $z$ 我们必然可以取到。因此，全部武将对应默契<strong>次大值的最大值</strong>即为我们的最优解，同时我们根据机器策略的盲目性，显然可以主动的避免让机器取得优于我们的解，因此<strong>人类必胜</strong>。</p>
 <hr>
+<p><span id="youjianrushou"></span></p>
 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2672">P2672 [NOIP2015 普及组] 推销员</a></p>
 <p>$贪心$<br>刚开始想了10+分钟有了接近正解的思路，但是没有沉住气继续深入思考就直接开始 coding，导致接下来硬钢 90 分钟无果，然后继续深入思考后想出正解，10分钟写完代码。</p>
 <p>$\large{\text{Solution1}}:$ </p>
@@ -241,7 +244,8 @@
 <p>选 $x$ 个，最贪心的想，按照 $a$ 排序选前 $x$ 大的那几个。其次，我们可以通过将其中的一个（显然也<strong>只</strong>需要一个）换成另一个 $S$ 更大的数，也就是用 $a$ 的贡献换取 $S$ 的贡献，也可能让答案更优。至于用哪个来换呢，显然使用最小的，也就是第 $x$ 大的来换。</p>
 <p><strong>这题确实挺不错的。</strong></p>
 <hr>
-<h2 id="1-26"><a href="#1-26" class="headerlink" title="$1-26$"></a>$1-26$</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF743C" title="Vladik and fractions">Vladik and fractions</a></p>
+<h2 id="1-26"><a href="#1-26" class="headerlink" title="$1-26$"></a>$1-26$</h2><p><span id="1-26-1"></span></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF743C" title="Vladik and fractions">Vladik and fractions</a></p>
 <p>$数学，构造$<br>找到了解题的关键但是没有深入思考，导致20分钟后宣告失败，遂看题解。</p>
 <p>$\large{\text{Solution}}:$ </p>
 <blockquote>
@@ -254,12 +258,14 @@
 \dfrac{1}{x}+\dfrac{1}{y}=\dfrac{1}{n}</script><p>然后就是<strong>小学奥数</strong> $\dfrac{1}{n+1}+\dfrac{1}{n(n+1)}=\dfrac{1}{n}$ 结束。</p>
 <p>闲话：实在太菜了，做黄色的构造题都觉得好难QAQ</p>
 <hr>
+<p><span id="1-26-2"></span></p>
 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_agc032_a" title="[AGC032A] Limited Insertion">[AGC032A] Limited Insertion</a></p>
 <p>$构造$<br>AGC 的题目果然不一般，非常有趣，思路中的细节值得深入思考。思考20分钟无果，遂看题解。</p>
 <p>$\large{\text{Solution}}:$ </p>
 <p>考虑什么时候无解：一个数 $a$ 肯定是在位置 $a$ 处插入，而往后的插入操作每次都会把一部分数往后推，因此最终序列 $b$ 有 $b_i\le i$，否则无解。<br>最后一次插入是容易的，肯定是一个数 $i$ 插入到了位置 $i$ 上。于是我们<strong>从后往前</strong>找到第一个 $b_i=i$ 的数，那么他就是最后一次插入操作，把它撤销后序列就变成了上一次操作时的，就变成了子问题，继续找即可。<br>为什么要从后往前呢？考虑若有 $b_x=x,b_y=y,x<y$ ，若我们选择撤销 $x$ 处的插入的话，那么 $x$ 后面所有的数都要往前挪一个， 也就有 $b_{y-1}=y>y-1$ ，也就是一开始说的无解的情况。所以要从后往前找。</p>
 <p>还是没做出黄题，寄。</p>
 <hr>
+<p><span id="1-26-3"></span></p>
 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_agc032_b" title="[AGC032B] Balanced Neighbors">[AGC032B] Balanced Neighbors</a></p>
 <p>$图论，构造$<br>在草稿纸上模拟了10分钟就想出来了，大概是构造一个各部分权值和相同的完全 $k$ 分图（参加OI-wiki），算是比较友好的题了。<br>题解的思路非常有参考价值。</p>
 <p>$\large{\text{Solution}}:$ </p>
@@ -281,15 +287,18 @@
 <hr>
 <p>看到了个有趣的 $trick$：不降原则——枚举的时候有序枚举，保证序列不降，可以去重</p>
 <hr>
-<h2 id="1-27"><a href="#1-27" class="headerlink" title="$1-27$"></a>$1-27$</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1514" title="P1514 [NOIP2010 提高组] 引水入城">P1514 [NOIP2010 提高组] 引水入城</a></p>
+<h2 id="1-27"><a href="#1-27" class="headerlink" title="$1-27$"></a>$1-27$</h2><p><span id="1-27-1"></span></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1514" title="P1514 [NOIP2010 提高组] 引水入城">P1514 [NOIP2010 提高组] 引水入城</a></p>
 <p>$记忆化搜索，贪心$<br>记搜部分水爆了，但是第二问的前提性质还是挺有思考价值的，证出来以后贪心就做完了。</p>
 <p>$\large{\text{Solution}}:$ </p>
 <p>无解的情况搜索的时候直接判掉就好了，下面只考虑有解的情况。</p>
 <p>性质：蓄水池能到的干旱地区一定是<strong>一个区间</strong><br>证明的话可以用反证法巴拉巴拉胡一下，大概就是两条不同的路径必有交叉，因此能输水的地方必定连续（没有图不好描述）<br>记搜的时候就把蓄水池能到的区间左右端点记下来即可，然后第二问就变成了一个区间覆盖整条线段问题，贪心即可。<br>具体的，将区间按照左端点排序，每次选都选一个<strong>左端点在已覆盖范围内且右端点最远的区间</strong>来更新。<a target="_blank" rel="noopener" href="https://blog.csdn.net/yl_puyu/article/details/109682733" title="参考">参考</a></p>
 <hr>
+<p><span id="1-27-2"></span></p>
 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1120" title="P1120 小木棍">P1120 小木棍</a></p>
 <p>$搜索剪枝$<br>没写，但是其中有一个剪枝非常巧妙。<br>因该是最优化剪枝的一种，思想就是若当前操作是<strong>最优的但还是失败了</strong>，那就没必要继续往后尝试了，回溯到以前即可。<br>具体到本题，就是若选上当前木棍恰好能凑出一根完整木棍（这个操作显然是所有可选操作中最优的），但是往后搜索还是失败了，那就没必要继续尝试用别的木棍凑这根原始木棍了，回溯到上一层。</p>
 <hr>
+<p><span id="1-27-3"></span></p>
 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3067" title="P3067 [USACO12OPEN] Balanced Cow Subsets G">P3067 [USACO12OPEN] Balanced Cow Subsets G</a></p>
 <p>$Meet<del>in</del>middle$，$bitset$<br>非常暴力的思路，思考加coding反反复复一共花了90min，最后用bitset直接贴着最优解的脸。<br>看了一下题解，思路很巧妙（果然我太蠢了），但是貌似并没有我快（普遍做法 1s，我的做法 200ms）</p>
 <p>$\large{\text{Solution1}}:$ </p>
@@ -741,5 +750,21 @@ W&=\prod\limits_{i=1}^n h_i\\[3px]
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
 </body>
 </html>
